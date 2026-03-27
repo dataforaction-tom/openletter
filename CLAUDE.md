@@ -1,65 +1,41 @@
-# Project: [Name]
+# Project: OpenLetter
 
-[One-line description of what this is and what it does]
+Self-hostable open letter platform — create letters, collect verified signatures, manage from dashboard.
 
 ## Architecture
 
-- `src/` — [what lives here]
-- `public/` — [static assets, etc.]
-- `lib/` — [shared utilities]
-- [Add key directories as they emerge]
+- `src/` — Hono server (TypeScript)
+  - `routes/` — auth.ts, dashboard.ts, public.ts, api.ts
+  - `views/` — Server-rendered HTML template functions
+  - `lib/` — db.ts (SQLite), email.ts (Resend), nanoid.ts, hash.ts, markdown.ts
+  - `middleware/` — auth.ts (session validation), error.ts (404/500)
+- `public/` — Static assets (CSS, JS), no build step
+- `data/` — SQLite database (gitignored)
 
 ## Commands
 
-- `npm run dev` — start development server
-- `npm test` — run tests
-- `npm run build` — production build
-- `npm run lint` — check for issues
+- `npm run dev` — start dev server with hot reload
+- `npm start` — start production server
+- `npm run migrate` — initialize database
+- `docker compose up` — run with Docker
 
 ## Standards
 
-- [Framework-specific conventions]
-- [Testing expectations — e.g. "write tests for all new functions"]
-- [Naming conventions]
+- Server-rendered HTML views (TypeScript functions returning strings)
+- Vanilla CSS and JS (no frameworks, no build step)
+- SQLite with better-sqlite3 (synchronous queries, parameterized)
+- All IDs use nanoid
+- ESM modules (.js extensions in imports)
 
 ## Verification
 
-Claude should verify its own work. For this project:
-- Run `npm run build` after structural changes to confirm nothing breaks
-- Run `npm run lint` before considering any task complete
-- If tests exist, run `npm test` after changes to tested code
-- [Add project-specific verification steps as they emerge]
+- Run `npx tsc --noEmit` after changes to confirm types check
+- Run `npm run dev` to verify server starts
+- Test auth flow: /login → magic link → /dashboard
 
 ## Working Rules
 
 - Always check for existing patterns before creating new ones
 - Prefer small, incremental changes over big rewrites
-- If a task will take more than ~50 lines of changes, use plan mode first
 - Don't add dependencies without asking
 - Don't refactor code that wasn't part of the task
-- Don't create files without explaining what and why
-
-## State & Progress
-
-> Updated: [date]
-> Current focus: [what we're working on]
-> Status: [where things stand]
-
-See PLAN.md for task tracking, STATE.md for system state, HANDOFF.md for session notes.
-
-## Known Issues
-
-- [Things that are broken or incomplete]
-- [Workarounds currently in place]
-
-## Lessons Learned
-
-Things Claude has got wrong on this project — don't repeat these:
-
-- [Add mistakes as they happen — this is the highest-leverage section]
-
-<!-- 
-Keep this file concise. ~150 instructions max before Claude starts ignoring things.
-If Claude already does something correctly without being told, don't add it here.
-Focus on: things Claude gets wrong, patterns it can't infer, commands it needs.
--->
