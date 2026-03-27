@@ -15,7 +15,7 @@ const app = new Hono();
 app.use('*', authMiddleware);
 
 function getUser(c: Context): User {
-  return getUser(c) as unknown as User;
+  return c.get('user') as unknown as User;
 }
 
 function getOwnedLetter(c: Context, id: string): Letter | null {

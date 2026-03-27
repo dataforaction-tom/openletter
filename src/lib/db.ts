@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import Database, { type Database as DatabaseType } from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 import type { User, AuthToken, Session, Letter, Signature } from '../types.js';
@@ -7,7 +7,7 @@ const dataDir = process.env.DATA_DIR || './data';
 fs.mkdirSync(dataDir, { recursive: true });
 
 const dbPath = path.join(dataDir, 'openletter.db');
-const db = new Database(dbPath);
+const db: DatabaseType = new Database(dbPath);
 
 db.pragma('journal_mode = WAL');
 
@@ -417,6 +417,15 @@ export function deleteSignature(id: string, letterId: string): void {
 
 export function getAllSignaturesForExport(letterId: string): Signature[] {
   return _getAllSignaturesForExport.all(letterId) as Signature[];
+}
+
+// Recent published letters (for landing page)
+const _getRecentPublishedLetters = db.prepare(
+  `SELECT * FROM letters WHERE status = 'published' ORDER BY published_at DESC LIMIT ?`
+);
+
+export function getRecentPublishedLetters(limit: number = 6): Letter[] {
+  return _getRecentPublishedLetters.all(limit) as Letter[];
 }
 
 export default db;
