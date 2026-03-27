@@ -1,0 +1,8 @@
+CLAUDE.local.md
+HANDOFF.md
+.claude/settings.local.json
+node_modules/
+dist/
+data/
+.env
+*.db
