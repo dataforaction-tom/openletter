@@ -7,6 +7,7 @@ import { layout } from '../views/layout.js';
 import { dashboardPage } from '../views/dashboard/index.js';
 import { newLetterPage, editorPage } from '../views/dashboard/editor.js';
 import { settingsPage } from '../views/dashboard/settings.js';
+import { signaturesPage } from '../views/dashboard/signatures.js';
 import type { Letter, LetterSettings, User } from '../types.js';
 
 const app = new Hono();
@@ -192,5 +193,85 @@ app.post('/:id/settings', async (c) => {
 
   return c.redirect(`/dashboard/${id}/settings`);
 });
+
+// Signatures list
+app.get('/:id/signatures', (c) => {
+  const id = c.req.param('id');
+  const letter = getOwnedLetter(c, id);
+  if (!letter) {
+    return c.redirect('/dashboard');
+  }
+
+  const filter = (c.req.query('filter') || 'all') as 'all' | 'verified' | 'pending';
+  const page = Math.max(1, parseInt(c.req.query('page') || '1', 10) || 1);
+  const perPage = 50;
+
+  const signatures = db.getSignaturesByLetter(letter.id, { filter, page, perPage });
+  const stats = db.getSignatureCount(letter.id);
+  const totalPages = db.getSignaturesTotalPages(letter.id, filter, perPage);
+
+  return c.html(
+    layout('Signatures', signaturesPage(letter, signatures, filter, page, totalPages, stats), {
+      user: getUser(c),
+      scripts: ['/js/modal.js'],
+    })
+  );
+});
+
+// Delete signature
+app.post('/:id/signatures/:sid/delete', (c) => {
+  const id = c.req.param('id');
+  const sid = c.req.param('sid');
+  const letter = getOwnedLetter(c, id);
+  if (!letter) {
+    return c.redirect('/dashboard');
+  }
+
+  db.deleteSignature(sid, letter.id);
+  return c.redirect(`/dashboard/${id}/signatures`);
+});
+
+// Export signatures as CSV
+app.get('/:id/signatures/export', (c) => {
+  const id = c.req.param('id');
+  const letter = getOwnedLetter(c, id);
+  if (!letter) {
+    return c.redirect('/dashboard');
+  }
+
+  const signatures = db.getAllSignaturesForExport(letter.id);
+
+  const csvRows: string[] = ['Name,Email,Organisation,Role,Location,Comment,Verified,Date'];
+  for (const sig of signatures) {
+    csvRows.push(
+      [
+        csvEscape(sig.name),
+        csvEscape(sig.email),
+        csvEscape(sig.organisation || ''),
+        csvEscape(sig.role || ''),
+        csvEscape(sig.location || ''),
+        csvEscape(sig.comment || ''),
+        sig.verified ? 'Yes' : 'No',
+        sig.created_at,
+      ].join(',')
+    );
+  }
+
+  const csv = csvRows.join('\n');
+
+  return new Response(csv, {
+    headers: {
+      'Content-Type': 'text/csv',
+      'Content-Disposition': `attachment; filename="${letter.slug}-signatures.csv"`,
+    },
+  });
+});
+
+function csvEscape(value: string): string {
+  if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+    return '"' + value.replace(/"/g, '""') + '"';
+  }
+  return value;
+}
 
 export default app;
