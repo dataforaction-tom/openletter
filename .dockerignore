@@ -3,4 +3,4 @@ data
 .env
 .git
 *.md
-docs
+!docs/terms.md
