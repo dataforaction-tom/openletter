@@ -2,6 +2,61 @@
 
 OpenLetter is designed to run on your own infrastructure. This guide covers setup with Docker, email configuration, and running behind Cloudflare or other reverse proxies.
 
+## Deploy to Fly.io
+
+The quickest way to get a live instance:
+
+1. [Install the Fly CLI](https://fly.io/docs/flyctl/install/) and sign up
+2. Clone and deploy:
+
+```bash
+git clone https://github.com/dataforaction-tom/openletter.git
+cd openletter
+fly launch
+```
+
+3. Set your secrets:
+
+```bash
+fly secrets set SESSION_SECRET="$(openssl rand -hex 32)" APP_URL="https://your-app.fly.dev"
+```
+
+4. Configure email (see [Email configuration](#email-configuration) below):
+
+```bash
+fly secrets set EMAIL_PROVIDER=smtp SMTP_HOST=smtp.example.com SMTP_PORT=587 SMTP_USER=you SMTP_PASS=secret SMTP_FROM="OpenLetter <noreply@yourdomain.com>"
+```
+
+The included `fly.toml` is pre-configured with:
+
+- **London region** (`lhr`) — change `primary_region` if you prefer another location
+- **Persistent volume** at `/data` for the SQLite database
+- **Auto-stop/start** — the machine sleeps when idle to minimise costs
+- **Force HTTPS** — all traffic is encrypted
+- **Automatic database migration** on every deploy
+
+### Custom domain on Fly.io
+
+To use your own domain:
+
+```bash
+fly certs create letters.yourdomain.com
+```
+
+Then point your DNS (A/AAAA or CNAME) to the address Fly provides. Update your `APP_URL` secret to match:
+
+```bash
+fly secrets set APP_URL=https://letters.yourdomain.com
+```
+
+### Redeploying
+
+After pulling new changes:
+
+```bash
+fly deploy
+```
+
 ## Quick start with Docker
 
 The simplest way to deploy:

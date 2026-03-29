@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.2.1] — 2026-03-29
+
+### Added
+
+- **Fly.io deployment** — deploy to Fly.io with a single `fly deploy` command. Includes `fly.toml` configuration with persistent volume for the SQLite database, auto-stop/start to save costs, and London region by default.
+- **Automatic database migration** on container start — the database is created or updated automatically when the Docker container starts, no manual migration step needed.
+
+### Fixed
+
+- **App now reachable in containerised environments** — the server was only listening on localhost, which prevented external connections in Docker and Fly.io. It now listens on all interfaces.
+
 ## [0.2.0] — 2026-03-29
 
 ### Added
