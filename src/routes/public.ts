@@ -6,9 +6,27 @@ import { sendVerificationEmail } from '../lib/email.js';
 import { layout } from '../views/layout.js';
 import { publicLetterPage } from '../views/letter/public.js';
 import { signedPage } from '../views/letter/signed.js';
+import { renderMarkdown } from '../lib/markdown.js';
+import fs from 'fs';
+import path from 'path';
 import type { LetterSettings } from '../types.js';
 
+const termsPath = path.join(process.cwd(), 'docs', 'terms.md');
+const termsMd = fs.existsSync(termsPath) ? fs.readFileSync(termsPath, 'utf-8') : '# Terms of Service\n\nComing soon.';
+const termsHtml = renderMarkdown(termsMd);
+
 const app = new Hono();
+
+// Terms of Service
+app.get('/terms', (c) => {
+  return c.html(layout('Terms of Service', `
+    <div class="container">
+      <article class="letter-content" style="max-width:720px;margin:0 auto;padding:var(--space-xl) 0;">
+        ${termsHtml}
+      </article>
+    </div>
+  `));
+});
 
 // Public letter page
 app.get('/l/:slug', (c) => {
@@ -17,6 +35,17 @@ app.get('/l/:slug', (c) => {
 
   if (!letter || letter.status === 'draft') {
     return c.notFound();
+  }
+
+  if (letter.status === 'removed') {
+    return c.html(layout('Letter Removed', `
+      <div class="container">
+        <div class="letter-removed" style="text-align:center;padding:var(--space-xl) 0;">
+          <h1>Letter Removed</h1>
+          <p class="text-muted">This letter has been removed for violating our <a href="/terms">Terms of Service</a>.</p>
+        </div>
+      </div>
+    `), 410);
   }
 
   const page = Math.max(1, parseInt(c.req.query('page') || '1', 10) || 1);
