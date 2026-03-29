@@ -1,0 +1,16 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#1B2A4A"/>
+  <rect x="40" y="40" width="1120" height="550" rx="12" fill="#F7F5F0" fill-opacity="0.05" stroke="#F7F5F0" stroke-opacity="0.1" stroke-width="1"/>
+  <!-- Quill icon -->
+  <path d="M100 420L108 388L128 408L100 420Z" stroke="#2D8B7A" stroke-width="3" stroke-linejoin="round" fill="none"/>
+  <path d="M108 388L148 328C156 316 172 312 180 316C184 324 180 340 172 348L128 408" stroke="#2D8B7A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Title -->
+  <text x="100" y="260" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="600" fill="#F7F5F0" letter-spacing="-1">OpenLetter</text>
+  <!-- Tagline -->
+  <text x="100" y="320" font-family="system-ui, sans-serif" font-size="28" fill="#F7F5F0" fill-opacity="0.7">Create open letters. Collect verified signatures.</text>
+  <!-- URL -->
+  <text x="100" y="540" font-family="system-ui, sans-serif" font-size="22" fill="#2D8B7A">open-letter.uk</text>
+  <!-- Decorative lines -->
+  <line x1="100" y1="360" x2="400" y2="360" stroke="#2D8B7A" stroke-width="2" stroke-opacity="0.4"/>
+  <line x1="100" y1="500" x2="1100" y2="500" stroke="#F7F5F0" stroke-width="1" stroke-opacity="0.1"/>
+</svg>

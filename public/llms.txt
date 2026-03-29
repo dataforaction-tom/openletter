@@ -1,0 +1,27 @@
+# OpenLetter
+
+> Create open letters. Collect verified signatures. Self-hostable.
+
+OpenLetter is an open-source platform for creating, publishing, and collecting verified signatures on open letters. It is designed for campaigns, petitions, and collective statements.
+
+## Features
+
+- Create and publish open letters with markdown content
+- Collect verified email signatures from supporters
+- Customisable signature fields (name, email, organisation, role, location, comments)
+- Email verification for signatures via magic link
+- Public letter pages with signature counts and signatory lists
+- Dashboard for managing letters, viewing signatures, and exporting data
+- Self-hostable with SQLite database and Docker support
+
+## Links
+
+- Website: https://open-letter.uk
+- Terms of Service: https://open-letter.uk/terms
+
+## Technical
+
+- Built with Hono (TypeScript), SQLite, server-rendered HTML
+- No JavaScript frameworks, no build step
+- Email via Resend or SMTP
+- Deployable to Fly.io, Docker, or any Node.js host

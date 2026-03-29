@@ -18,14 +18,38 @@ export function layout(title: string, content: string, options: {
   isAdmin?: boolean;
 } = {}): string {
   const { user, scripts = [], description, slug, isAdmin } = options;
+  const appUrl = process.env.APP_URL || 'https://open-letter.uk';
+  const pageTitle = `${title} — OpenLetter`;
+  const metaDesc = description || 'Create open letters and collect verified signatures. Open source, self-hostable.';
+  const canonicalUrl = slug ? `${appUrl}/l/${slug}` : appUrl;
+  const ogImage = `${appUrl}/og-image.svg`;
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title} — OpenLetter</title>
-  ${description ? `<meta name="description" content="${description}">` : ''}
-  ${slug ? `<meta property="og:url" content="${process.env.APP_URL}/l/${slug}">` : ''}
+  <title>${pageTitle}</title>
+  <meta name="description" content="${metaDesc}">
+  <link rel="canonical" href="${canonicalUrl}">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="${pageTitle}">
+  <meta property="og:description" content="${metaDesc}">
+  <meta property="og:url" content="${canonicalUrl}">
+  <meta property="og:image" content="${ogImage}">
+  <meta property="og:site_name" content="OpenLetter">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${pageTitle}">
+  <meta name="twitter:description" content="${metaDesc}">
+  <meta name="twitter:image" content="${ogImage}">
+
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css2?family=fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=dm-sans:wght@400;500;600&family=jetbrains-mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
