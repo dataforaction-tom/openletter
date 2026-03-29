@@ -48,7 +48,7 @@ export function emptyState(
   actionText?: string,
 ): string {
   return `<div class="empty-state">
-  <div class="empty-state-icon">&#9993;</div>
+  <div class="empty-state-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="8" y="12" width="32" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 15L24 28L40 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   <h3>${escapeHtml(title)}</h3>
   <p>${escapeHtml(description)}</p>
   ${actionUrl && actionText ? `<a href="${escapeHtml(actionUrl)}" class="btn btn-primary">${escapeHtml(actionText)}</a>` : ''}
@@ -116,8 +116,8 @@ export function formatDate(dateStr: string): string {
 
 export function statCard(label: string, value: string | number): string {
   return `<div class="stat-card">
-  <div class="stat-card-value">${escapeHtml(String(value))}</div>
-  <div class="stat-card-label">${escapeHtml(label)}</div>
+  <span class="stat-card-value">${escapeHtml(String(value))}</span>
+  <span class="stat-card-label">${escapeHtml(label)}</span>
 </div>`;
 }
 

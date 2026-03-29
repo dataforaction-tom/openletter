@@ -118,12 +118,12 @@ app.post('/l/:slug/sign', async (c) => {
 
   if (settings.require_verification) {
     await sendVerificationEmail(email, name, letter.title, token);
+    return c.redirect(`/l/${slug}/signed?email=${encodeURIComponent(email)}`);
   } else {
     // Auto-verify if verification not required
     db.verifySignature(token);
+    return c.redirect(`/l/${slug}/signed?email=${encodeURIComponent(email)}&verified=1`);
   }
-
-  return c.redirect(`/l/${slug}/signed?email=${encodeURIComponent(email)}`);
 });
 
 // Signed confirmation page
@@ -136,8 +136,10 @@ app.get('/l/:slug/signed', (c) => {
   }
 
   const email = c.req.query('email') || '';
+  const verified = c.req.query('verified') === '1';
+  const title = verified ? 'Thank you' : 'Check your email';
 
-  return c.html(layout('Check your email', signedPage(letter, email)));
+  return c.html(layout(title, signedPage(letter, email, verified)));
 });
 
 // Verify signature

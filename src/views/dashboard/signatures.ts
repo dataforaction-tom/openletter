@@ -42,9 +42,10 @@ export function signaturesPage(
     .join('\n      ');
 
   return `
+<div class="container container--wide">
 ${dashboardTabs(letter.id, 'signatures')}
 
-<div class="grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: var(--space-xl)">
+<div class="stat-row">
   ${statCard('Total', stats.total)}
   ${statCard('Verified', stats.verified)}
   ${statCard('Pending', stats.pending)}
@@ -78,5 +79,6 @@ ${
     : emptyState('No signatures', 'No signatures match this filter.')
 }
 
-${pagination(page, totalPages, `/dashboard/${escapeHtml(letter.id)}/signatures?filter=${filter}`)}`;
+${pagination(page, totalPages, `/dashboard/${escapeHtml(letter.id)}/signatures?filter=${filter}`)}
+</div>`;
 }

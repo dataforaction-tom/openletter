@@ -49,7 +49,7 @@ export function settingsPage(letter: Letter): string {
   ];
 
   return `
-<div class="container">
+<div class="container container--wide">
   ${dashboardTabs(letter.id, 'settings')}
 
   <form method="post" action="/dashboard/${escapeHtml(letter.id)}/settings">

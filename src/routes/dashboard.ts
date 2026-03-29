@@ -84,7 +84,7 @@ app.get('/:id', (c) => {
   return c.html(
     layout('Edit Letter', editorPage(letter), {
       user: getUser(c),
-      scripts: ['/js/editor.js'],
+      scripts: ['/js/modal.js', '/js/editor.js'],
     })
   );
 });

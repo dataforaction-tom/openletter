@@ -24,6 +24,29 @@
   // Initial render
   updatePreview();
 
+  // --- Toggle preview sidebar ---
+  var toggleBtn = document.getElementById('toggle-preview');
+  var previewPane = document.getElementById('preview-pane');
+  var editorContainer = document.getElementById('editor-container');
+
+  if (toggleBtn && previewPane && editorContainer) {
+    toggleBtn.addEventListener('click', function () {
+      var isCollapsed = previewPane.classList.toggle('collapsed');
+      editorContainer.classList.toggle('preview-collapsed', isCollapsed);
+      toggleBtn.setAttribute('aria-pressed', isCollapsed ? 'false' : 'true');
+    });
+  }
+
+  // --- Markdown cheat sheet ---
+  var cheatsheetBtn = document.getElementById('open-cheatsheet');
+  if (cheatsheetBtn) {
+    cheatsheetBtn.addEventListener('click', function () {
+      if (typeof openModal === 'function') {
+        openModal('md-cheatsheet');
+      }
+    });
+  }
+
   // --- Autosave ---
   var autosaveTimer = null;
 
