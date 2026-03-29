@@ -92,7 +92,7 @@ export function editorPage(letter: Letter): string {
   <div class="action-buttons" style="border-top:none;padding-top:0;margin-top:var(--space-sm)">
     ${isPublished ? `<a href="/l/${escapeHtml(letter.slug)}" target="_blank" class="btn btn-secondary">View published letter &rarr;</a>` : ''}
     <form method="post" action="/dashboard/${escapeHtml(letter.id)}/publish">
-      <button type="submit" class="btn ${isPublished ? 'btn-secondary' : 'btn-success'}">${isPublished ? 'Unpublish' : 'Publish'}</button>
+      <button type="submit" class="btn ${isPublished ? 'btn-secondary' : 'btn-success'}"${isPublished ? '' : ` onclick="return confirm('By publishing, you confirm this letter complies with our Terms of Service. Continue?')"`}>${isPublished ? 'Unpublish' : 'Publish'}</button>
     </form>
     <form method="post" action="/dashboard/${escapeHtml(letter.id)}/delete" class="delete-form">
       <button type="submit" class="btn btn-danger">Delete</button>

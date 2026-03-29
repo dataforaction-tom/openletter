@@ -39,7 +39,7 @@ export function layout(title: string, content: string, options: {
         ${quillSvg}
         <span>OpenLetter</span>
       </div>
-      <p>Open source, self-hostable</p>
+      <p>Open source, self-hostable &middot; <a href="/terms" style="text-decoration:underline;">Terms of Service</a></p>
     </div>
   </footer>
   <script src="/js/app.js"></script>

@@ -53,6 +53,12 @@ export function loginPage(options: { error?: string; sent?: boolean; email?: str
           <label for="email">Email address</label>
           <input type="email" id="email" name="email" required placeholder="you@example.com" autofocus>
         </div>
+        <div class="form-group" style="margin-top:var(--space-sm)">
+          <label style="display:flex;align-items:flex-start;gap:var(--space-sm);font-size:0.9rem;cursor:pointer;">
+            <input type="checkbox" name="tos_accepted" value="1" required style="margin-top:3px;">
+            <span>I agree to the <a href="/terms" target="_blank">Terms of Service</a></span>
+          </label>
+        </div>
         <button type="submit" class="btn btn-primary" style="width:100%">Send magic link</button>
       </form>
       <p class="text-muted text-center mt-lg">

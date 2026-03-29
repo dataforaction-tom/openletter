@@ -54,6 +54,7 @@ app.get('/auth/verify', (c) => {
 
   if (authToken.type === 'signup') {
     const newUser = db.createUser(generateId(), authToken.email);
+    db.setTosAccepted(newUser.id);
     userId = newUser.id;
   } else {
     if (!authToken.user_id) {
