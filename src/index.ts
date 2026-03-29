@@ -5,6 +5,7 @@ import { serveStatic } from '@hono/node-server/serve-static';
 import authRoutes from './routes/auth.js';
 import dashboardRoutes from './routes/dashboard.js';
 import publicRoutes from './routes/public.js';
+import adminRoutes from './routes/admin.js';
 import apiRoutes from './routes/api.js';
 import { notFoundPage, errorPage } from './middleware/error.js';
 import { layout } from './views/layout.js';
@@ -27,6 +28,7 @@ app.get('/', (c) => {
 // Routes
 app.route('/', authRoutes);
 app.route('/dashboard', dashboardRoutes);
+app.route('/admin', adminRoutes);
 app.route('/', publicRoutes);
 app.route('/api', apiRoutes);
 
