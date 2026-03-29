@@ -7,9 +7,13 @@
   <text x="100" y="300" font-family="system-ui, sans-serif" font-size="28" fill="#F7F5F0" fill-opacity="0.7">Create open letters. Collect verified signatures.</text>
   <!-- Accent line -->
   <line x1="100" y1="340" x2="400" y2="340" stroke="#2D8B7A" stroke-width="2" stroke-opacity="0.6"/>
-  <!-- Quill icon - bottom right -->
-  <path d="M1020 520L1028 488L1048 508L1020 520Z" stroke="#2D8B7A" stroke-width="3" stroke-linejoin="round" fill="none" opacity="0.5"/>
-  <path d="M1028 488L1068 428C1076 416 1092 412 1100 416C1104 424 1100 440 1092 448L1048 508" stroke="#2D8B7A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.5"/>
+  <!-- Squiggly writing lines near the pen -->
+  <path d="M750 460C760 456 770 464 780 460C790 456 800 464 810 460" stroke="#F7F5F0" stroke-width="1.5" stroke-linecap="round" opacity="0.12"/>
+  <path d="M750 475C762 471 774 479 786 475C798 471 810 479 822 475C834 471 846 479 858 475" stroke="#F7F5F0" stroke-width="1.5" stroke-linecap="round" opacity="0.1"/>
+  <path d="M750 490C765 486 780 494 795 490C810 486 825 494 840 490" stroke="#F7F5F0" stroke-width="1.5" stroke-linecap="round" opacity="0.08"/>
+  <!-- Quill icon -->
+  <path d="M920 480L928 448L948 468L920 480Z" stroke="#2D8B7A" stroke-width="3" stroke-linejoin="round" fill="none" opacity="0.4"/>
+  <path d="M928 448L968 388C976 376 992 372 1000 376C1004 384 1000 400 992 408L948 468" stroke="#2D8B7A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.4"/>
   <!-- Divider line -->
   <line x1="100" y1="500" x2="1100" y2="500" stroke="#F7F5F0" stroke-width="1" stroke-opacity="0.1"/>
   <!-- URL -->
