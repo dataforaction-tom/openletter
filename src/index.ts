@@ -20,6 +20,7 @@ app.use('/js/*', serveStatic({ root: './public' }));
 app.use('/fonts/*', serveStatic({ root: './public' }));
 app.use('/favicon.svg', serveStatic({ root: './public', path: '/favicon.svg' }));
 app.use('/og-image.svg', serveStatic({ root: './public', path: '/og-image.svg' }));
+app.use('/og-image.png', serveStatic({ root: './public', path: '/og-image.png' }));
 app.use('/llms.txt', serveStatic({ root: './public', path: '/llms.txt' }));
 
 const appUrl = process.env.APP_URL || 'https://open-letter.uk';

@@ -4,6 +4,7 @@ data/
 .env
 *.db
 *.png
+!public/og-image.png
 .playwright-mcp/
 
 # Claude Code template files

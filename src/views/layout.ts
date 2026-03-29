@@ -22,7 +22,7 @@ export function layout(title: string, content: string, options: {
   const pageTitle = `${title} — OpenLetter`;
   const metaDesc = description || 'Create open letters and collect verified signatures. Open source, self-hostable.';
   const canonicalUrl = slug ? `${appUrl}/l/${slug}` : appUrl;
-  const ogImage = `${appUrl}/og-image.svg`;
+  const ogImage = `${appUrl}/og-image.png`;
 
   return `<!DOCTYPE html>
 <html lang="en">
