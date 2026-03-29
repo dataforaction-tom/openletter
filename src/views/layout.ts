@@ -41,6 +41,7 @@ export function layout(title: string, content: string, options: {
         <span>OpenLetter</span>
       </div>
       <p>Open source, self-hostable &middot; <a href="/terms" style="text-decoration:underline;">Terms of Service</a></p>
+      <p style="margin-top:var(--space-xs)">Made by <a href="https://tomcw.xyz" style="text-decoration:underline;">Tomcw.xyz</a> and <a href="https://good-ship.co.uk" style="text-decoration:underline;">The Good Ship</a></p>
     </div>
   </footer>
   <script src="/js/app.js"></script>
