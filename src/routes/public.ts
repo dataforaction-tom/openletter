@@ -117,7 +117,7 @@ app.post('/l/:slug/sign', async (c) => {
   });
 
   if (settings.require_verification) {
-    await sendVerificationEmail(email, name, letter.title, token);
+    await sendVerificationEmail(email, name, letter.title, letter.content_md, token);
     return c.redirect(`/l/${slug}/signed?email=${encodeURIComponent(email)}`);
   } else {
     // Auto-verify if verification not required
