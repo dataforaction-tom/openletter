@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS letters (
   content_md TEXT NOT NULL DEFAULT '',
   authors_json TEXT DEFAULT '[]',
   settings_json TEXT DEFAULT '{"require_verification":true,"show_signature_count":true,"show_view_count":true,"show_signatories":true,"allow_comments":false,"fields":{"name":"required","email":"required","organisation":"optional","role":"optional","location":"hidden"}}',
-  status TEXT DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'closed')),
+  status TEXT DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'closed', 'removed')),
   closing_date TEXT,
   signature_count INTEGER DEFAULT 0,
   view_count INTEGER DEFAULT 0,
@@ -85,6 +85,9 @@ CREATE INDEX IF NOT EXISTS idx_signatures_letter ON signatures(letter_id);
 CREATE INDEX IF NOT EXISTS idx_signatures_verified ON signatures(letter_id, verified);
 CREATE INDEX IF NOT EXISTS idx_signatures_token ON signatures(verification_token);
 `);
+
+// --- Migrations ---
+try { db.exec(`ALTER TABLE users ADD COLUMN tos_accepted_at TEXT`); } catch { /* already exists */ }
 
 // --- Prepared statements ---
 
@@ -426,6 +429,41 @@ const _getRecentPublishedLetters = db.prepare(
 
 export function getRecentPublishedLetters(limit: number = 6): Letter[] {
   return _getRecentPublishedLetters.all(limit) as Letter[];
+}
+
+// Admin
+const _getAllLetters = db.prepare(
+  `SELECT l.*, u.email as user_email FROM letters l JOIN users u ON l.user_id = u.id ORDER BY l.created_at DESC`
+);
+const _getLetterByIdWithUser = db.prepare(
+  `SELECT l.*, u.email as user_email FROM letters l JOIN users u ON l.user_id = u.id WHERE l.id = ?`
+);
+const _removeLetter = db.prepare(
+  `UPDATE letters SET status = 'removed', updated_at = datetime('now') WHERE id = ?`
+);
+const _hardDeleteLetter = db.prepare('DELETE FROM letters WHERE id = ?');
+const _setTosAccepted = db.prepare(
+  `UPDATE users SET tos_accepted_at = datetime('now') WHERE id = ?`
+);
+
+export function getAllLettersWithUser(): (Letter & { user_email: string })[] {
+  return _getAllLetters.all() as (Letter & { user_email: string })[];
+}
+
+export function getLetterByIdWithUser(id: string): (Letter & { user_email: string }) | undefined {
+  return _getLetterByIdWithUser.get(id) as (Letter & { user_email: string }) | undefined;
+}
+
+export function removeLetter(id: string): void {
+  _removeLetter.run(id);
+}
+
+export function hardDeleteLetter(id: string): void {
+  _hardDeleteLetter.run(id);
+}
+
+export function setTosAccepted(userId: string): void {
+  _setTosAccepted.run(userId);
 }
 
 export default db;

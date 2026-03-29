@@ -2,6 +2,7 @@ export interface User {
   id: string;
   email: string;
   name: string | null;
+  tos_accepted_at: string | null;
   created_at: string;
 }
 
@@ -32,7 +33,7 @@ export interface Letter {
   content_md: string;
   authors_json: string;
   settings_json: string;
-  status: 'draft' | 'published' | 'closed';
+  status: 'draft' | 'published' | 'closed' | 'removed';
   closing_date: string | null;
   signature_count: number;
   view_count: number;
