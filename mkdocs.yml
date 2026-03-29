@@ -1,0 +1,11 @@
+site_name: "OpenLetter Documentation"
+docs_dir: docs
+theme:
+  name: material
+  palette:
+    primary: teal
+nav:
+  - Home: index.md
+  - User Guide: user-guide.md
+  - Self-Hosting: self-hosting.md
+  - Changelog: changelog.md
