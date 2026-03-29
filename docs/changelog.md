@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3.0] — 2026-03-29
+
+### Added
+
+- **Custom domain** — OpenLetter now lives at open-letter.uk with full HTTPS support.
+- **Branded HTML emails** — magic link and signature verification emails now arrive as styled, branded messages with your letter title and a preview of the content. Plain text fallbacks are included for all email clients.
+- **Terms of Service** — a comprehensive Terms of Service page is now available at /terms, covering prohibited content (hate speech, discrimination, defamation, incitement to harm, and more), content responsibility, and moderation policy.
+- **Terms acceptance on signup** — new users must agree to the Terms of Service before creating an account.
+- **Publish confirmation** — when publishing a letter, you'll be asked to confirm it complies with the Terms of Service.
+- **Admin moderation** — platform administrators can now view all letters, soft-remove letters that violate the Terms (showing a violation notice at the public URL), or permanently delete them. Access is controlled via the `ADMIN_EMAIL` environment variable.
+- **Favicon** — a branded SVG favicon based on the quill mark.
+- **SEO and social sharing** — every page now includes Open Graph and Twitter Card meta tags, a canonical URL, and a meta description. A branded PNG image is used for social previews on LinkedIn and other platforms.
+- **Sitemap and robots.txt** — a dynamic sitemap at /sitemap.xml lists all published letters. The robots.txt file blocks crawlers from dashboard and admin pages.
+- **llms.txt** — a machine-readable description of the platform at /llms.txt for AI assistants and language models.
+- **Footer credits** — the footer now credits Tomcw.xyz and The Good Ship.
+
+### Changed
+
+- **Removed letters show a notice** — if a letter is taken down by an admin, visitors see a clear message explaining it was removed for violating the Terms of Service, rather than a generic 404 page.
+- **Admin link in navigation** — if you're the platform admin, an "Admin" link appears in the navigation bar.
+
 ## [0.2.1] — 2026-03-29
 
 ### Added

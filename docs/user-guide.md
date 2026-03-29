@@ -6,7 +6,7 @@ This guide covers everything you need to know about using OpenLetter — from cr
 
 OpenLetter uses passwordless authentication. Enter your email address on the sign-in page and you'll receive a magic link. Click the link to sign in — it's valid for one hour.
 
-If you don't have an account, one is created automatically when you first sign in.
+If you don't have an account, one is created automatically when you first sign in. You'll need to agree to the [Terms of Service](/terms) when signing up.
 
 In development mode (no email service configured), the magic link is printed to the terminal instead of being emailed.
 
@@ -44,7 +44,7 @@ To add an author, type their name (and optionally their organisation), then clic
 
 ## Publishing
 
-When your letter is ready, click **Publish**. This makes your letter publicly accessible at its unique URL (shown on the settings page as the "slug").
+When your letter is ready, click **Publish**. You'll be asked to confirm that your letter complies with the [Terms of Service](/terms). This makes your letter publicly accessible at its unique URL (shown on the settings page as the "slug").
 
 You can **Unpublish** at any time to take the letter offline, and **Publish** again when ready.
 
@@ -124,3 +124,37 @@ Visitors click **Add your name** to open the signing form. After submitting:
 ## Deleting a letter
 
 On the editor page, click **Delete**. You'll be asked to confirm. This permanently removes the letter and all its signatures.
+
+## Email notifications
+
+OpenLetter sends branded HTML emails for two purposes:
+
+- **Magic links** — when you sign in or create an account, you'll receive a styled email with a prominent button to complete the action.
+- **Signature verification** — when someone signs a letter that requires email verification, they receive an email showing the letter title, a preview of the content, and a button to verify their signature.
+
+All emails include a plain text version for compatibility with any email client.
+
+## Terms of Service
+
+OpenLetter has a [Terms of Service](/terms) that all users agree to when signing up. The Terms cover:
+
+- **Prohibited content** — letters must not incite harm or violence, promote discrimination or hatred, contain defamatory statements, or spread misleading information.
+- **Content responsibility** — you are fully responsible for the content of letters you publish.
+- **Moderation** — the platform administrator may remove letters that violate the Terms, with or without notice.
+
+You can read the full Terms at any time — there's a link in the footer of every page.
+
+## Platform administration
+
+If you are the platform administrator (identified by the `ADMIN_EMAIL` environment variable), you have access to additional tools:
+
+### Admin dashboard
+
+An **Admin** link appears in your navigation bar, taking you to a dashboard that lists every letter on the platform — across all users. You can see each letter's title, author, status, signature count, and creation date.
+
+### Moderating letters
+
+Click any letter in the admin dashboard to see its full content and moderation options:
+
+- **Remove (soft delete)** — takes the letter offline and shows a notice to anyone visiting its URL that it was removed for violating the Terms of Service. The letter data is preserved in the database.
+- **Delete permanently** — completely removes the letter and all its signatures from the database. This cannot be undone.
