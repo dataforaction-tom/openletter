@@ -48,8 +48,9 @@ serve(
   {
     fetch: app.fetch,
     port,
+    hostname: '0.0.0.0',
   },
   (info) => {
-    console.log(`OpenLetter running at http://localhost:${info.port}`);
+    console.log(`OpenLetter running at http://0.0.0.0:${info.port}`);
   }
 );

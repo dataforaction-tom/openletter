@@ -15,4 +15,4 @@ EXPOSE 3000
 
 RUN mkdir -p /data
 
-CMD ["npx", "tsx", "src/index.ts"]
+CMD ["sh", "-c", "npx tsx scripts/migrate.ts && npx tsx src/index.ts"]
