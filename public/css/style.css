@@ -1871,3 +1871,31 @@ dialog .modal-close:focus-visible {
     padding-right: var(--space-md);
   }
 }
+
+/* Admin & moderation */
+.status-removed {
+  background: var(--error-light);
+  color: var(--error);
+}
+
+.btn-danger {
+  background: var(--error);
+  color: #fff;
+  border: none;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+.letter-removed {
+  padding: var(--space-xl) 0;
+}
+.letter-removed h1 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  margin-bottom: var(--space-sm);
+}

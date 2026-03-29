@@ -18,6 +18,11 @@ function getUser(c: Context): User {
   return c.get('user') as unknown as User;
 }
 
+function isAdmin(c: Context): boolean {
+  const user = getUser(c);
+  return !!process.env.ADMIN_EMAIL && user.email === process.env.ADMIN_EMAIL;
+}
+
 function getOwnedLetter(c: Context, id: string): Letter | null {
   const user = getUser(c);
   const letter = db.getLetterById(id);
@@ -39,12 +44,12 @@ function slugify(title: string): string {
 app.get('/', (c) => {
   const user = getUser(c);
   const letters = db.getLettersByUser(user.id);
-  return c.html(layout('Dashboard', dashboardPage(letters), { user }));
+  return c.html(layout('Dashboard', dashboardPage(letters), { user, isAdmin: isAdmin(c) }));
 });
 
 // New letter form
 app.get('/new', (c) => {
-  return c.html(layout('New Letter', newLetterPage(), { user: getUser(c) }));
+  return c.html(layout('New Letter', newLetterPage(), { user: getUser(c), isAdmin: isAdmin(c) }));
 });
 
 // Create letter
@@ -55,7 +60,7 @@ app.post('/new', async (c) => {
   const contentMd = (body['content_md'] as string) || '';
 
   if (!title) {
-    return c.html(layout('New Letter', newLetterPage(), { user }));
+    return c.html(layout('New Letter', newLetterPage(), { user, isAdmin: isAdmin(c) }));
   }
 
   let slug = slugify(title);
@@ -85,6 +90,7 @@ app.get('/:id', (c) => {
     layout('Edit Letter', editorPage(letter), {
       user: getUser(c),
       scripts: ['/js/modal.js', '/js/editor.js'],
+      isAdmin: isAdmin(c),
     })
   );
 });
@@ -149,7 +155,7 @@ app.get('/:id/settings', (c) => {
     return c.redirect('/dashboard');
   }
   return c.html(
-    layout('Letter Settings', settingsPage(letter), { user: getUser(c) })
+    layout('Letter Settings', settingsPage(letter), { user: getUser(c), isAdmin: isAdmin(c) })
   );
 });
 
@@ -214,6 +220,7 @@ app.get('/:id/signatures', (c) => {
     layout('Signatures', signaturesPage(letter, signatures, filter, page, totalPages, stats), {
       user: getUser(c),
       scripts: ['/js/modal.js'],
+      isAdmin: isAdmin(c),
     })
   );
 });

@@ -18,7 +18,7 @@ app.use('*', requireAdmin);
 app.get('/', (c) => {
   const letters = db.getAllLettersWithUser();
   const user = getUser(c);
-  return c.html(layout('Admin', adminDashboardPage(letters), { user }));
+  return c.html(layout('Admin', adminDashboardPage(letters), { user, isAdmin: true }));
 });
 
 app.get('/letters/:id', (c) => {
@@ -27,7 +27,7 @@ app.get('/letters/:id', (c) => {
     return c.redirect('/admin');
   }
   const user = getUser(c);
-  return c.html(layout('Admin — Letter', adminLetterDetailPage(letter), { user }));
+  return c.html(layout('Admin — Letter', adminLetterDetailPage(letter), { user, isAdmin: true }));
 });
 
 app.post('/letters/:id/remove', (c) => {

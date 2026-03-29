@@ -15,8 +15,9 @@ export function layout(title: string, content: string, options: {
   scripts?: string[];
   description?: string;
   slug?: string;
+  isAdmin?: boolean;
 } = {}): string {
-  const { user, scripts = [], description, slug } = options;
+  const { user, scripts = [], description, slug, isAdmin } = options;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +32,7 @@ export function layout(title: string, content: string, options: {
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to content</a>
-  ${user ? navBar(user) : ''}
+  ${user ? navBar(user, isAdmin) : ''}
   <main id="main-content">${content}</main>
   <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
@@ -72,7 +73,7 @@ export function layout(title: string, content: string, options: {
 </html>`;
 }
 
-function navBar(user: User): string {
+function navBar(user: User, isAdmin?: boolean): string {
   return `
   <nav class="nav" aria-label="Main navigation">
     <div class="nav-inner">
@@ -82,6 +83,7 @@ function navBar(user: User): string {
       </a>
       <div class="nav-right">
         <span class="nav-email">${user.email}</span>
+        ${isAdmin ? '<a href="/admin" class="nav-link">Admin</a>' : ''}
         <a href="/logout" class="nav-link">Log out</a>
       </div>
     </div>
