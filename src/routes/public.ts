@@ -3,6 +3,7 @@ import * as db from '../lib/db.js';
 import { generateId, generateToken } from '../lib/nanoid.js';
 import { hashIP } from '../lib/hash.js';
 import { sendVerificationEmail } from '../lib/email.js';
+import { isRateLimited } from '../lib/rate-limit.js';
 import { layout } from '../views/layout.js';
 import { publicLetterPage } from '../views/letter/public.js';
 import { signedPage } from '../views/letter/signed.js';
@@ -97,6 +98,12 @@ app.post('/l/:slug/sign', async (c) => {
     return c.redirect(`/l/${slug}`);
   }
 
+  // Rate limit by IP: 10 signatures per hour
+  const ip = c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || 'unknown';
+  if (isRateLimited('sign-ip', ip, 10, 3600_000)) {
+    return c.redirect(`/l/${slug}`);
+  }
+
   const name = ((body['name'] as string) || '').trim();
   const email = ((body['email'] as string) || '').trim().toLowerCase();
   const organisation = ((body['organisation'] as string) || '').trim() || undefined;
@@ -129,7 +136,6 @@ app.post('/l/:slug/sign', async (c) => {
   }
 
   const token = generateToken();
-  const ip = c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || '0.0.0.0';
   const ipHash = hashIP(ip);
 
   db.createSignature({

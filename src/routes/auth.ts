@@ -3,6 +3,7 @@ import { getCookie, setCookie, deleteCookie } from 'hono/cookie';
 import * as db from '../lib/db.js';
 import { generateId, generateToken } from '../lib/nanoid.js';
 import { sendMagicLink } from '../lib/email.js';
+import { isRateLimited } from '../lib/rate-limit.js';
 import { loginPage } from '../views/login.js';
 
 const app = new Hono();
@@ -17,11 +18,23 @@ app.get('/login', (c) => {
 });
 
 app.post('/login', async (c) => {
+  const ip = c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || 'unknown';
   const body = await c.req.parseBody();
   const email = (body['email'] as string || '').trim().toLowerCase();
 
+  // Rate limit by IP: 5 attempts per hour
+  if (isRateLimited('login-ip', ip, 5, 3600_000)) {
+    return c.html(loginPage({ error: 'Too many login attempts. Please try again later.' }));
+  }
+
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return c.html(loginPage({ error: 'Please enter a valid email address.' }));
+  }
+
+  // Rate limit by email: 2 attempts per hour
+  if (isRateLimited('login-email', email, 2, 3600_000)) {
+    // Show success page regardless to avoid email enumeration
+    return c.html(loginPage({ sent: true, email }));
   }
 
   const existingUser = db.getUserByEmail(email);
