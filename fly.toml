@@ -8,6 +8,7 @@ primary_region = 'lhr'
   NODE_ENV = 'production'
   DATA_DIR = '/data'
   APP_URL = 'https://open-letter.uk'
+  TURNSTILE_SITE_KEY = '0x4AAAAAAC8iaRb9DatquHpL'
 
 [http_service]
   internal_port = 3000

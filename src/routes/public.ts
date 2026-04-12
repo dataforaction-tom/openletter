@@ -4,6 +4,7 @@ import { generateId, generateToken } from '../lib/nanoid.js';
 import { hashIP } from '../lib/hash.js';
 import { sendVerificationEmail } from '../lib/email.js';
 import { isRateLimited } from '../lib/rate-limit.js';
+import { verifyTurnstile } from '../lib/turnstile.js';
 import { layout } from '../views/layout.js';
 import { publicLetterPage } from '../views/letter/public.js';
 import { signedPage } from '../views/letter/signed.js';
@@ -98,8 +99,14 @@ app.post('/l/:slug/sign', async (c) => {
     return c.redirect(`/l/${slug}`);
   }
 
-  // Rate limit by IP: 10 signatures per hour
+  // Verify Turnstile CAPTCHA
+  const turnstileToken = (body['cf-turnstile-response'] as string) || '';
   const ip = c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || 'unknown';
+  if (!await verifyTurnstile(turnstileToken, ip)) {
+    return c.redirect(`/l/${slug}`);
+  }
+
+  // Rate limit by IP: 10 signatures per hour
   if (isRateLimited('sign-ip', ip, 10, 3600_000)) {
     return c.redirect(`/l/${slug}`);
   }

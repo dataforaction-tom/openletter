@@ -4,6 +4,7 @@ import * as db from '../lib/db.js';
 import { generateId, generateToken } from '../lib/nanoid.js';
 import { sendMagicLink } from '../lib/email.js';
 import { isRateLimited } from '../lib/rate-limit.js';
+import { verifyTurnstile } from '../lib/turnstile.js';
 import { loginPage } from '../views/login.js';
 
 const app = new Hono();
@@ -29,6 +30,12 @@ app.post('/login', async (c) => {
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return c.html(loginPage({ error: 'Please enter a valid email address.' }));
+  }
+
+  // Verify Turnstile CAPTCHA
+  const turnstileToken = (body['cf-turnstile-response'] as string) || '';
+  if (!await verifyTurnstile(turnstileToken, ip)) {
+    return c.html(loginPage({ error: 'CAPTCHA verification failed. Please try again.' }));
   }
 
   // Rate limit by email: 2 attempts per hour

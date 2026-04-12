@@ -1,5 +1,6 @@
 import { layout } from './layout.js';
 import { escapeHtml } from './components.js';
+import { isTurnstileEnabled, getSiteKey } from '../lib/turnstile.js';
 
 // Magic link envelope SVG
 const envelopeSvg = `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -59,8 +60,10 @@ export function loginPage(options: { error?: string; sent?: boolean; email?: str
             <span>I agree to the <a href="/terms" target="_blank">Terms of Service</a></span>
           </label>
         </div>
+        ${isTurnstileEnabled() ? `<div class="cf-turnstile" data-sitekey="${getSiteKey()}" data-theme="light"></div>` : ''}
         <button type="submit" class="btn btn-primary" style="width:100%">Send magic link</button>
       </form>
+      ${isTurnstileEnabled() ? `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>` : ''}
       <p class="text-muted text-center mt-lg">
         No account? One will be created automatically.
       </p>

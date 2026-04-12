@@ -1,6 +1,7 @@
 import type { Letter, Signature, LetterSettings, Author } from '../../types.js';
 import { renderMarkdown } from '../../lib/markdown.js';
 import { escapeHtml, formatDate, pagination, flashMessage } from '../components.js';
+import { isTurnstileEnabled, getSiteKey } from '../../lib/turnstile.js';
 
 // Ornamental diamond SVG for section dividers
 const ornamentSvg = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -145,8 +146,10 @@ ${canSign ? `
       </div>
       ${formFields}
       <div style="display:none"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
+      ${isTurnstileEnabled() ? `<div class="cf-turnstile" data-sitekey="${getSiteKey()}" data-theme="light"></div>` : ''}
       <button type="submit" class="btn btn-amber" style="width:100%">Sign this letter</button>
     </form>
+    ${isTurnstileEnabled() ? `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>` : ''}
   </div>
 </dialog>` : ''}
 
